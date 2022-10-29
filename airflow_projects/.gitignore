@@ -1,4 +1,4 @@
-./.env
-./airflow-data
-./plugins
-./scripts
+.env
+/airflow-data
+/plugins
+/scripts
