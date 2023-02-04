@@ -1,7 +1,9 @@
-.env
-/airflow-data
-/plugins
-/scripts
-/dags/__pycache__
-/logs
-/plugins
+generated/
+Include/
+Lib/
+logs
+plugins/
+Scripts
+venv/
+
+pyvenv.cfg

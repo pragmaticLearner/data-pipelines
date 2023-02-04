@@ -1,5 +1,4 @@
 import os
-import mysqlclient as sql
 
 from typing import Dict
 
@@ -12,18 +11,6 @@ class MySQLHelper:
 
     def connect_to_mysql(self, data: dict):
         try:
-            connection = sql.connector.connect(
-                host=os.environ['LOCALHOST'],
-                user=os.environ['USER'],
-                passwd=os.environ['PASSWORD']
-            )
-            print(f"Connection successfully established : {connection}")
-
-            mycursor = connection.cursor()
-            mycursor.execute(self.sql_query, data)
-
-            connection.commit()
+            print("Hello!!!")
         except Exception as e:
-            print(f"Exception occurred while trying to connect to MySQL: {e}.")
-
-        return connection
+            print(f"Goodbye!!!")

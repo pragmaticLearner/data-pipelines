@@ -1,15 +1,30 @@
+import aiohttp
+
 from datetime import datetime
 from random import randint
 
 from airflow.decorators import dag, task
+from fpl import FPL
 
 from helpers.sql_helpers import MySQLHelper
 
-COLUMN_LIST = []
-values = "?, "*len(COLUMN_LIST)
-DB_TABLE = "DB.table"
 
-SQL_QUERY = f"INSERT INTO {DB_TABLE}(field1, ...fieldX) VALUES ({values[:-1]})"
+async def _main_session():
+    session = aiohttp.ClientSession()
+    fpl = FPL(session)
+
+    await session.close()
+
+
+# Elements to be changed for the urls
+element_id: int = 0
+event_id: int = 0
+
+urls = {'base_url': "https://fantasy.premierleague.com/api/",
+        'general_information_path': "bootstrap-static/",
+        'fixtures': 'fixtures/',
+        'player_data': f"element-summary/{element_id}/",
+        'gameweek_live_data': f'event/{event_id}/live/'}
 
 
 @dag(dag_id='example_dag', start_date=datetime(2022, 10, 29), catchup=False, tags=['example_dags'])
@@ -17,8 +32,7 @@ def main():
 
     @task(task_id='extract_task')
     def extract() -> dict:
-        # For simplicity we will just return a random valued dictionary
-        return {'first_column': randint(0, 11), 'second_column': randint(2000, 2500), 'third_column': randint(3000, 3500)}
+        return "hello extract"
 
     @task(task_id='transform_task')
     def transform(data: dict):
@@ -33,7 +47,7 @@ def main():
             print(f"Exception occurred: {e}")
         return data
 
-    # Define DAG flow
+    # Define the DAG's flow
     load(transform(extract()))
 
 
